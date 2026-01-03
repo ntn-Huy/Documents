@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Học C Shell (csh) - Từ Cơ bản đến Nâng cao</title>
+    <style>
+        /* --- ĐỊNH NGHĨA BẢNG MÀU MỚI --- */
+        :root {
+            /* Giao diện Sáng (Light Mode) */
+            --bg-page: #ffffff;          /* Nền trang web: Trắng */
+            --bg-sidebar: #f8f9fa;       /* Nền menu trái: Xám rất nhạt */
+            --text-content: #333333;     /* Màu chữ nội dung: Đen xám */
+            --text-heading: #0056b3;     /* Màu tiêu đề: Xanh dương đậm */
+            --border-color: #e9ecef;     /* Màu đường viền: Xám nhạt */
+
+            /* Giao diện Code (Dark Mode - GIỮ NGUYÊN) */
+            --code-bg: #1e1e1e;          /* Nền khung code: Đen */
+            --code-border: #444444;      /* Viền khung code */
+            --keyword: #ff7b72;          /* Từ khóa (if, else...) */
+            --var: #79c0ff;              /* Biến */
+            --comment: #8b949e;          /* Comment */
+            --str: #a5d6ff;              /* Chuỗi */
+            --num: #d2a8ff;              /* Số */
+            --op: #ff7b72;               /* Toán tử */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: var(--bg-page);
+            color: var(--text-content);
+            line-height: 1.6;
+        }
+        
+        /* --- MENU BÊN TRÁI --- */
+        nav {
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        nav h2 {
+            color: var(--text-heading);
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        nav h2:first-child { margin-top: 0; }
+        nav ul { list-style: none; padding: 0; }
+        nav li { padding: 8px 0; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        nav a {
+            color: #555; /* Màu link mặc định */
+            text-decoration: none;
+            transition: 0.2s;
+            display: block;
+        }
+        nav a:hover {
+            color: var(--text-heading); /* Màu link khi di chuột: Xanh */
+            padding-left: 5px;
+            font-weight: 500;
+        }
+
+        /* --- NỘI DUNG CHÍNH --- */
+        main {
+            margin-left: 320px; /* Để chừa chỗ cho nav */
+            padding: 40px;
+            max-width: 900px;
+        }
+        h1 {
+            color: var(--text-heading);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        /* Thẻ chứa nội dung từng phần */
+        .section-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Đổ bóng nhẹ */
+        }
+        h3 {
+            color: var(--text-heading);
+            margin-top: 0;
+            border-left: 4px solid var(--text-heading);
+            padding-left: 15px;
+            font-size: 1.5rem;
+        }
+        p, li { color: var(--text-content); }
+
+        /* --- KHỐI CODE MINH HỌA (GIỮ NGUYÊN MÀU) --- */
+        .code-window {
+            background-color: var(--code-bg);
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid var(--code-border);
+            color: #c9d1d9; /* Màu chữ mặc định trong code block */
+        }
+        /* Các class màu cho cú pháp code */
+        .kw { color: var(--keyword); font-weight: bold; } 
+        .vr { color: var(--var); } 
+        .cm { color: var(--comment); font-style: italic; } 
+        .st { color: var(--str); } 
+        .nm { color: var(--num); }
+        .op { color: var(--op); }
+
+        /* Ghi chú */
+        .note {
+            background-color: #e7f3ff; /* Màu nền xanh nhạt cho ghi chú */
+            border-left: 5px solid var(--text-heading);
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #004085;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h2>LÀM QUEN VỚI CSH</h2>
+    <ul>
+        <li><a href="#intro">1. Tại sao học C Shell?</a></li>
+        <li><a href="#hello">2. Hello World - Script đầu tiên</a></li>
+    </ul>
+
+    <h2>KIỂU DỮ LIỆU & TOÁN TỬ</h2>
+    <ul>
+        <li><a href="#vars">3. Biến (set) & Môi trường (setenv)</a></li>
+        <li><a href="#math">4. Toán tử Số học & Bitwise</a></li>
+        <li><a href="#input">5. Nhập xuất dữ liệu ($<)</a></li>
+    </ul>
+
+    <h2>CẤU TRÚC ĐIỀU KHIỂN</h2>
+    <ul>
+        <li><a href="#if">6. If Else / Else If</a></li>
+        <li><a href="#switch">7. Switch Case</a></li>
+        <li><a href="#goto">8. Câu lệnh Goto & Label</a></li>
+    </ul>
+
+    <h2>VÒNG LẶP</h2>
+    <ul>
+        <li><a href="#foreach">9. Vòng lặp Foreach (Mảng)</a></li>
+        <li><a href="#while">10. Vòng lặp While</a></li>
+        <li><a href="#break">11. Break & Continue</a></li>
+    </ul>
+
+    <h2>MẢNG & CHUỖI</h2>
+    <ul>
+        <li><a href="#array">12. Mảng 1 Chiều (Index từ 1)</a></li>
+        <li><a href="#string">13. Xử lý Chuỗi ký tự</a></li>
+    </ul>
+
+    <h2>FILE & NÂNG CAO</h2>
+    <ul>
+        <li><a href="#file">14. Đọc Ghi File & Redirection</a></li>
+        <li><a href="#jobs">15. Quản lý Tiến trình (Jobs)</a></li>
+    </ul>
+</nav>
+
+<main>
+    <h1>Lộ Trình Học C Shell Chuyên Sâu</h1>
+    <p>Tác giả: Nguyễn Thành Nhật Huy</p>
+
+    <div class="section-card" id="hello">
+        <h3>1. Hello World - Chương trình đầu tiên</h3>
+        <p>Giống như ngôn ngữ C, mọi script C Shell cần một dòng khởi đầu để hệ thống biết sử dụng trình thông dịch nào.</p>
+        <div class="code-window">
+            <span class="cm">#!/bin/csh -f</span><br>
+            <span class="cm"># Tùy chọn -f giúp khởi động nhanh hơn</span><br>
+            <span class="kw">echo</span> <span class="st">"Hello, Computer Engineering Student!"</span><br>
+            <span class="kw">echo</span> <span class="st">"Chương trình này đang chạy trên kernel: `uname -r`"</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="vars">
+        <h3>2. Biến và Toán tử (Dựa trên Logic C)</h3>
+        <p>C Shell phân biệt rõ giữa biến thường (chuỗi/mảng) và biến dùng để tính toán số học (sử dụng ký hiệu <code style="background:#eee; padding: 2px 5px; border-radius: 3px; color: var(--text-heading);">@</code>).</p>
+        <div class="code-window">
+            <span class="cm"># --- Khai báo biến thường ---</span><br>
+            <span class="kw">set</span> <span class="vr">name</span> = <span class="st">"Phương Nguyên"</span><br>
+            <span class="kw">set</span> <span class="vr">tools</span> = (<span class="st">"gcc"</span> <span class="st">"make"</span> <span class="st">"gdb"</span>)<br><br>
+            
+            <span class="cm"># --- Toán tử số học & Bitwise (Quan trọng) ---</span><br>
+            <span class="kw">@</span> <span class="vr">x</span> = <span class="nm">10</span><br>
+            <span class="cmt"># Lưu ý: Phải có khoảng trắng quanh dấu = và các toán tử</span><br>
+            <span class="kw">@</span> <span class="vr">y</span> = ( <span class="vr">$x</span> <span class="op">*</span> <span class="nm">2</span> ) <span class="op">+</span> <span class="nm">5</span><br><br>
+            <span class="cm"># Phép dịch bit (Bitwise Shift)</span><br>
+            <span class="kw">@</span> <span class="vr">bit_shift</span> = ( <span class="nm">1</span> <span class="op">&lt;&lt;</span> <span class="nm">4</span> ) <span class="cm"># Kết quả là 16</span><br>
+            <span class="kw">echo</span> <span class="st">"Kết quả Y: $y | Dịch bit: $bit_shift"</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="if">
+        <h3>3. Cấu trúc Điều khiển (If-Else & Switch)</h3>
+        <p>Cú pháp rất gần gũi với C, sử dụng <code>if</code>, <code>then</code>, <code>else</code> và kết thúc bằng <code>endif</code>.</p>
+        <div class="code-window">
+            <span class="cm"># Cấu trúc If-Else If-Else</span><br>
+            <span class="kw">if</span> ( <span class="vr">$y</span> <span class="op">&gt;=</span> <span class="nm">25</span> ) <span class="kw">then</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Giá trị Y đạt chuẩn cao."</span><br>
+            <span class="kw">else if</span> ( <span class="vr">$y</span> <span class="op">&gt;</span> <span class="nm">0</span> ) <span class="kw">then</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Giá trị Y dương nhưng chưa đạt chuẩn."</span><br>
+            <span class="kw">else</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Cảnh báo: Y không hợp lệ!"</span><br>
+            <span class="kw">endif</span><br><br>
+
+            <span class="cm"># Cấu trúc Switch Case (Thường dùng xử lý tham số đầu vào)</span><br>
+            <span class="kw">switch</span> ( <span class="vr">$argv[1]</span> )<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> <span class="st">"-help"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Hiển thị hướng dẫn sử dụng..."</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">breaksw</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> <span class="st">"-run"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Đang chạy chương trình..."</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">breaksw</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">default</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Lỗi: Tham số không xác định."</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">breaksw</span><br>
+            <span class="kw">endsw</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="foreach">
+        <h3>4. Vòng lặp (Loops)</h3>
+        <p>Sử dụng <code>foreach</code> để duyệt danh sách và <code>while</code> cho các điều kiện lặp.</p>
+        <div class="code-window">
+            <span class="cm"># Foreach: Duyệt qua tất cả file .c trong thư mục</span><br>
+            <span class="kw">foreach</span> <span class="vr">file</span> ( *.c )<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Tìm thấy source code: $file"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"># Ví dụ: Tự động biên dịch</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"># gcc $file -o $file:r</span><br>
+            <span class="kw">end</span><br><br>
+
+            <span class="cm"># While: Lặp với điều kiện số học</span><br>
+            <span class="kw">@</span> <span class="vr">counter</span> = <span class="nm">1</span><br>
+            <span class="kw">while</span> ( <span class="vr">$counter</span> <span class="op">&lt;=</span> <span class="nm">3</span> )<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Đếm ngược: $counter"</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">@</span> <span class="vr">counter</span><span class="op">++</span><br>
+            <span class="kw">end</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="array">
+        <h3>5. Mảng và Chuỗi (Array & Strings)</h3>
+        <div class="note">
+            <strong>Lưu ý quan trọng:</strong> Khác với C (bắt đầu từ 0), mảng trong C Shell bắt đầu từ chỉ số <strong>1</strong>.
+        </div>
+        <div class="code-window">
+            <span class="cm"># Khai báo mảng</span><br>
+            <span class="kw">set</span> <span class="vr">components</span> = (<span class="st">"CPU" "RAM" "SSD" "GPU"</span>)<br><br>
+            
+            <span class="cm"># Truy cập phần tử</span><br>
+            <span class="kw">echo</span> <span class="st">"Thành phần đầu tiên: $components[1]"</span> <span class="cm"># Output: CPU</span><br>
+            <span class="kw">echo</span> <span class="st">"Thành phần thứ ba:   $components[3]"</span> <span class="cm"># Output: SSD</span><br><br>
+            
+            <span class="cm"># Lấy kích thước mảng</span><br>
+            <span class="kw">echo</span> <span class="st">"Tổng số thành phần: $#components"</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="file">
+        <h3>6. Đọc/Ghi File & Phép thế (Substitution)</h3>
+        <p>C Shell cung cấp các bộ chỉnh sửa (modifiers) mạnh mẽ để thao tác với đường dẫn file mà không cần dùng lệnh ngoài như `sed` hay `awk`.</p>
+        <div class="code-window">
+            <span class="kw">set</span> <span class="vr">full_path</span> = <span class="st">"/home/student/projects/lab1.c"</span><br><br>
+            
+            <span class="kw">echo</span> <span class="st">"Đường dẫn gốc: $full_path"</span><br>
+            <span class="cm"># :t (tail) - Lấy tên file</span><br>
+            <span class="kw">echo</span> <span class="st">"Tên file:      $full_path:t"</span> <span class="cm"># -> lab1.c</span><br>
+            <span class="cm"># :h (head) - Lấy thư mục chứa</span><br>
+            <span class="kw">echo</span> <span class="st">"Thư mục:       $full_path:h"</span> <span class="cm"># -> /home/student/projects</span><br>
+            <span class="cm"># :r (root) - Loại bỏ phần mở rộng</span><br>
+            <span class="kw">echo</span> <span class="st">"Tên gốc:       $full_path:r"</span> <span class="cm"># -> /home/student/projects/lab1</span><br><br>
+            
+            <span class="cm"># Redirection: Ghi cả Output và Error vào file log</span><br>
+            <span class="kw">make</span> build <span class="op">&gt;&amp;</span> build_output.log
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>Lời khuyên thực hành</h3>
+        <p>Để thành thạo C Shell như một kỹ sư hệ thống thực thụ:</p>
+        <ol>
+            <li>Luôn chú ý đến khoảng trắng khi thực hiện các phép gán (<code>set name = val</code>) và tính toán (<code>@ x = 1 + 1</code>).</li>
+            <li>Sử dụng biến đặc biệt <code style="color:var(--text-heading)">$status</code> để kiểm tra xem lệnh vừa chạy có thành công hay không (0 là thành công).</li>
+            <li>Hãy thử viết các alias phức tạp trong file <code>.cshrc</code> của bạn để tăng tốc quy trình làm việc.</li>
+        </ol>
+    </div>
+</main>
+
+</body>
+</html>
