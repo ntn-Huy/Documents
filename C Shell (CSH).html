@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Học C Shell (csh) - Từ Cơ bản đến Nâng cao</title>
+    <title>C Shell từ cơ bản đến nâng cao</title>
     <style>
         :root {
             --bg-page: #ffffff;
@@ -113,212 +113,181 @@
     <ul>
         <li><a href="#vars">3. Biến (set) & Môi trường (setenv)</a></li>
         <li><a href="#math">4. Toán tử Số học & Bitwise</a></li>
-        <li><a href="#input">5. Nhập xuất dữ liệu ($<)</a></li>
+        <li><a href="#math_methods">5. Các cách viết toán tử (+ - * /)</a></li>
+        <li><a href="#decimal">6. Số thập phân (Floating Point)</a></li>
+        <li><a href="#input">7. Nhập xuất dữ liệu ($<)</a></li>
     </ul>
 
     <h2>CẤU TRÚC ĐIỀU KHIỂN</h2>
     <ul>
-        <li><a href="#if">6. If Else / Else If</a></li>
-        <li><a href="#switch">7. Switch Case</a></li>
-        <li><a href="#goto">8. Câu lệnh Goto & Label</a></li>
+        <li><a href="#if">8. If Else / Else If</a></li>
+        <li><a href="#switch">9. Switch Case</a></li>
+        <li><a href="#goto">10. Câu lệnh Goto & Label</a></li>
     </ul>
 
     <h2>VÒNG LẶP</h2>
     <ul>
-        <li><a href="#foreach">9. Vòng lặp Foreach (Mảng)</a></li>
-        <li><a href="#while">10. Vòng lặp While</a></li>
-        <li><a href="#break">11. Break & Continue</a></li>
+        <li><a href="#foreach">11. Vòng lặp Foreach (Mảng)</a></li>
+        <li><a href="#while">12. Vòng lặp While</a></li>
+        <li><a href="#break">13. Break & Continue</a></li>
     </ul>
 
     <h2>MẢNG & CHUỖI</h2>
     <ul>
-        <li><a href="#array">12. Mảng 1 Chiều (Index từ 1)</a></li>
-        <li><a href="#string">13. Xử lý Chuỗi ký tự</a></li>
+        <li><a href="#array">14. Mảng 1 Chiều (Index từ 1)</a></li>
+        <li><a href="#string">15. Xử lý Chuỗi ký tự</a></li>
     </ul>
 
     <h2>FILE & NÂNG CAO</h2>
     <ul>
-        <li><a href="#file">14. Đọc Ghi File & Redirection</a></li>
-        <li><a href="#jobs">15. Quản lý Tiến trình (Jobs)</a></li>
+        <li><a href="#file">16. Đọc Ghi File & Redirection</a></li>
+        <li><a href="#jobs">17. Quản lý Tiến trình (Jobs)</a></li>
     </ul>
 </nav>
 
 <main>
-    <h1>Học C Shell (csh) - Từ Cơ bản đến Nâng cao</h1>
-    <p>Tác giả: Nguyễn Thành Nhật Huy</p>
-
+    <h1>C Shell từ cơ bản đến nâng cao<h1>
+    <p>Tác giả : Nguyễn Thành Nhật Huy</p>
     <div class="section-card" id="intro">
         <h3>1. Tại sao học C Shell (csh)?</h3>
-        <p>C Shell được tạo ra bởi Bill Joy tại Berkeley, mục tiêu là mang cú pháp của <strong>ngôn ngữ lập trình C</strong> vào môi trường Shell. Nó cực kỳ phổ biến trong các hệ thống Unix đời đầu và hiện nay vẫn là tiêu chuẩn trong các công cụ thiết kế vi mạch (EDA Tools).</p>
-        <ul>
-            <li>Cú pháp điều khiển (If, Switch) giống hệt C.</li>
-            <li>Cơ chế Alias mạnh mẽ.</li>
-            <li>Phù hợp cho các kỹ sư làm việc với hệ thống phần cứng.</li>
-        </ul>
+        <p>C Shell mang cú pháp của ngôn ngữ C vào môi trường Shell, cực kỳ phổ biến trong các công cụ thiết kế vi mạch (EDA Tools).</p>
     </div>
 
     <div class="section-card" id="hello">
         <h3>2. Hello World - Script đầu tiên</h3>
-        <p>Mọi script chuyên nghiệp đều bắt đầu bằng <code>#!</code> (Shebang) và tùy chọn <code>-f</code> để bỏ qua file cấu hình cá nhân, giúp script chạy ổn định hơn.</p>
         <div class="code-window">
             <span class="cm">#!/bin/csh -f</span><br>
-            <span class="kw">echo</span> <span class="st">"Hello, Computer Engineering!"</span><br>
-            <span class="kw">echo</span> <span class="st">"Kernel version: `uname -r`"</span>
+            <span class="kw">echo</span> <span class="st">"Hello, Computer Engineering!"</span>
         </div>
     </div>
 
     <div class="section-card" id="vars">
         <h3>3. Biến (set) & Biến môi trường (setenv)</h3>
-        <p>Trong Csh, <code>set</code> dùng cho biến cục bộ, còn <code>setenv</code> dùng cho biến toàn cục của hệ thống.</p>
         <div class="code-window">
-            <span class="cm"># Biến cục bộ</span><br>
             <span class="kw">set</span> <span class="vr">project</span> = <span class="st">"Lab_01"</span><br>
-            <span class="kw">echo</span> <span class="st">"Working on $project"</span><br><br>
-            <span class="cm"># Biến môi trường (Không dùng dấu =)</span><br>
             <span class="kw">setenv</span> <span class="vr">TOOLS_PATH</span> <span class="st">"/usr/local/bin"</span>
         </div>
     </div>
 
     <div class="section-card" id="math">
         <h3>4. Toán tử Số học & Bitwise</h3>
-        <p>Đây là điểm mạnh của Csh. Bạn có thể dùng các phép toán Bitwise (dịch bit, AND, OR) trực tiếp như trong C.</p>
+        <p>Csh cho phép dùng toán tử bitwise (AND, OR, Shift) trực tiếp.</p>
         <div class="code-window">
             <span class="kw">@</span> <span class="vr">a</span> = <span class="nm">5</span><br>
-            <span class="kw">@</span> <span class="vr">b</span> = ( <span class="vr">$a</span> <span class="op">&lt;&lt;</span> <span class="nm">2</span> ) <span class="cm"># Dịch trái 2 bit (5 * 4 = 20)</span><br>
-            <span class="kw">@</span> <span class="vr">c</span> = ( <span class="vr">$b</span> <span class="op">&amp;</span> <span class="nm">15</span> ) <span class="cm"># Phép AND logic bit</span><br>
-            <span class="kw">echo</span> <span class="st">"Kết quả: $c"</span>
+            <span class="kw">@</span> <span class="vr">b</span> = ( <span class="vr">$a</span> <span class="op">&lt;&lt;</span> <span class="nm">2</span> ) <span class="cm"># Dịch trái 2 bit</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="math_methods">
+        <h3>5. Các cách thực hiện phép toán (+ - * /)</h3>
+        <p>Tùy vào nhu cầu tính số nguyên hay số thực, bạn có 3 cách viết chính.</p>
+
+        <h4>Cách 1: Sử dụng '@' (Số nguyên - Khuyên dùng)</h4>
+        <div class="code-window">
+            <span class="kw">@</span> <span class="vr">x</span> = <span class="vr">$a</span> <span class="op">+</span> <span class="vr">$b</span><br>
+            <span class="cm"># Bắt buộc có khoảng trắng quanh dấu = và toán tử.</span>
+        </div>
+
+        <h4>Cách 2: Sử dụng 'expr' (Cổ điển)</h4>
+        <div class="code-window">
+            <span class="kw">set</span> <span class="vr">mul</span> = <span class="st">`expr $a \* $b`</span> <span class="cm"># Phải có dấu \ trước dấu *</span>
+        </div>
+
+        <h4>Cách 3: Sử dụng 'bc' (Số thập phân)</h4>
+        <div class="code-window">
+            <span class="kw">set</span> <span class="vr">div</span> = <span class="st">`echo "scale=2; $a / $b" | bc`</span>
+        </div>
+    </div>
+
+    <div class="section-card" id="decimal">
+        <h3>6. Biểu diễn số thập phân (Floating Point)</h3>
+        <p>Do lệnh <code>@</code> chỉ hỗ trợ số nguyên, ta dùng <code>bc</code> hoặc <code>awk</code> để xử lý số thực.</p>
+        <div class="code-window">
+            <span class="kw">set</span> <span class="vr">res</span> = <span class="st">`awk "BEGIN {print 10 / 3}"`</span><br>
+            <span class="kw">printf</span> <span class="st">"Kết quả: %.2f\n"</span> <span class="vr">$res</span>
         </div>
     </div>
 
     <div class="section-card" id="input">
-        <h3>5. Nhập xuất dữ liệu ($<)</h3>
-        <p>Để nhận dữ liệu từ người dùng, C Shell sử dụng ký hiệu đặc biệt <code>$&lt;</code>.</p>
+        <h3>7. Nhập xuất dữ liệu ($<)</h3>
         <div class="code-window">
-            <span class="kw">echo</span> -n <span class="st">"Nhập tên linh kiện: "</span><br>
-            <span class="kw">set</span> <span class="vr">part</span> = <span class="op">$&lt;</span><br>
-            <span class="kw">echo</span> <span class="st">"Bạn đã nhập: $part"</span>
+            <span class="kw">set</span> <span class="vr">part</span> = <span class="op">$&lt;</span>
         </div>
     </div>
 
     <div class="section-card" id="if">
-        <h3>6. Cấu trúc điều khiển If Else</h3>
+        <h3>8. Cấu trúc điều khiển If Else</h3>
         <div class="code-window">
-            <span class="kw">if</span> ( <span class="vr">$a</span> <span class="op">&gt;</span> <span class="nm">10</span> ) <span class="kw">then</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Lớn hơn 10"</span><br>
-            <span class="kw">else</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Nhỏ hơn hoặc bằng 10"</span><br>
-            <span class="kw">endif</span>
+            <span class="kw">if</span> ( <span class="vr">$a</span> <span class="op">&gt;</span> <span class="nm">10</span> ) <span class="kw">then</span> ... <span class="kw">endif</span>
         </div>
     </div>
 
     <div class="section-card" id="switch">
-        <h3>7. Cấu trúc Switch Case</h3>
-        <p>Dùng để thay thế chuỗi If-Else dài, rất hiệu quả khi kiểm tra tham số dòng lệnh.</p>
+        <h3>9. Cấu trúc Switch Case</h3>
         <div class="code-window">
-            <span class="kw">switch</span> ( <span class="vr">$argv[1]</span> )<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> <span class="st">"run"</span>:<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Đang khởi chạy..."</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">breaksw</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> <span class="st">"stop"</span>:<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Đang dừng..."</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">breaksw</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">default</span>:<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Lệnh không hợp lệ"</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">breaksw</span><br>
-            <span class="kw">endsw</span>
+            <span class="kw">switch</span> ( <span class="vr">$argv[1]</span> ) ... <span class="kw">endsw</span>
         </div>
     </div>
 
     <div class="section-card" id="goto">
-        <h3>8. Câu lệnh Goto & Nhãn (Label)</h3>
-        <p>Giống như ngôn ngữ C hoặc Assembly, <code>goto</code> giúp nhảy đến một vị trí được đánh dấu bởi nhãn.</p>
+        <h3>10. Câu lệnh Goto & Nhãn (Label)</h3>
         <div class="code-window">
-            <span class="kw">goto</span> <span class="vr">START_JOB</span><br><br>
-            <span class="vr">SKIP_SECTION:</span><br>
-            <span class="kw">echo</span> <span class="st">"Phần này bị bỏ qua"</span><br>
-            <span class="kw">exit</span><br><br>
-            <span class="vr">START_JOB:</span><br>
-            <span class="kw">echo</span> <span class="st">"Bắt đầu công việc tại đây"</span>
+            <span class="kw">goto</span> <span class="vr">START</span> ... <span class="vr">START:</span>
         </div>
     </div>
 
     <div class="section-card" id="foreach">
-        <h3>9. Vòng lặp Foreach</h3>
-        <p>Dùng để duyệt qua một danh sách các phần tử hoặc các file.</p>
+        <h3>11. Vòng lặp Foreach</h3>
         <div class="code-window">
-            <span class="kw">foreach</span> <span class="vr">i</span> ( <span class="nm">1 2 3 4 5</span> )<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Số: $i"</span><br>
-            <span class="kw">end</span>
+            <span class="kw">foreach</span> <span class="vr">i</span> ( <span class="nm">1 2 3</span> ) ... <span class="kw">end</span>
         </div>
     </div>
 
     <div class="section-card" id="while">
-        <h3>10. Vòng lặp While</h3>
+        <h3>12. Vòng lặp While</h3>
         <div class="code-window">
-            <span class="kw">@</span> <span class="vr">n</span> = <span class="nm">1</span><br>
-            <span class="kw">while</span> ( <span class="vr">$n</span> <span class="op">&lt;=</span> <span class="nm">3</span> )<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Lặp lần: $n"</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">@</span> <span class="vr">n</span><span class="op">++</span><br>
-            <span class="kw">end</span>
+            <span class="kw">while</span> ( <span class="vr">$n</span> <span class="op">&lt;=</span> <span class="nm">3</span> ) ... <span class="kw">end</span>
         </div>
     </div>
 
     <div class="section-card" id="break">
-        <h3>11. Break & Continue</h3>
-        <p><code>break</code> dùng để thoát vòng lặp lập tức, <code>continue</code> dùng để nhảy sang lần lặp kế tiếp.</p>
+        <h3>13. Break & Continue</h3>
         <div class="code-window">
-            <span class="kw">foreach</span> <span class="vr">num</span> ( <span class="nm">1 2 3 4 5</span> )<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> ( <span class="vr">$num</span> <span class="op">==</span> <span class="nm">3</span> ) <span class="kw">continue</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> ( <span class="vr">$num</span> <span class="op">==</span> <span class="nm">5</span> ) <span class="kw">break</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">echo</span> <span class="st">"Value: $num"</span><br>
-            <span class="kw">end</span>
+            <span class="kw">if</span> ( <span class="vr">$num</span> <span class="op">==</span> <span class="nm">3</span> ) <span class="kw">continue</span>
         </div>
     </div>
 
     <div class="section-card" id="array">
-        <h3>12. Mảng 1 Chiều (Index từ 1)</h3>
-        <p>Lưu ý: <code>$array[0]</code> trong C tương đương <code>$array[1]</code> trong Csh.</p>
+        <h3>14. Mảng 1 Chiều (Index từ 1)</h3>
         <div class="code-window">
-            <span class="kw">set</span> <span class="vr">my_list</span> = ( <span class="st">"A" "B" "C"</span> )<br>
-            <span class="kw">echo</span> <span class="st">"Phần tử đầu: $my_list[1]"</span><br>
-            <span class="kw">echo</span> <span class="st">"Số lượng: $#my_list"</span>
+            <span class="kw">set</span> <span class="vr">list</span> = ( <span class="st">"A" "B"</span> )
         </div>
     </div>
 
     <div class="section-card" id="string">
-        <h3>13. Xử lý Chuỗi ký tự</h3>
-        <p>Csh cho phép nối chuỗi đơn giản bằng cách viết chúng cạnh nhau.</p>
+        <h3>15. Xử lý Chuỗi ký tự</h3>
         <div class="code-window">
-            <span class="kw">set</span> <span class="vr">str1</span> = <span class="st">"Computer"</span><br>
-            <span class="kw">set</span> <span class="vr">str2</span> = <span class="st">"Engineering"</span><br>
-            <span class="kw">set</span> <span class="vr">full</span> = <span class="st">"${str1}_${str2}"</span><br>
-            <span class="kw">echo</span> <span class="st">"$full"</span> <span class="cm"># Output: Computer_Engineering</span>
+            <span class="kw">set</span> <span class="vr">full</span> = <span class="st">"${str1}_${str2}"</span>
         </div>
     </div>
 
     <div class="section-card" id="file">
-        <h3>14. Đọc Ghi File & Redirection</h3>
-        <p>Sử dụng <code>&gt;&amp;</code> để chuyển hướng cả đầu ra (stdout) và lỗi (stderr) vào file.</p>
+        <h3>16. Đọc Ghi File & Redirection</h3>
         <div class="code-window">
-            <span class="kw">echo</span> <span class="st">"Dữ liệu mẫu"</span> <span class="op">&gt;</span> data.txt<br>
-            <span class="kw">gcc</span> main.c <span class="op">&gt;&amp;</span> compile.log <span class="cm"># Ghi log cả lỗi biên dịch</span>
+            <span class="kw">gcc</span> main.c <span class="op">&gt;&amp;</span> compile.log
         </div>
     </div>
 
     <div class="section-card" id="jobs">
-        <h3>15. Quản lý Tiến trình (Jobs Control)</h3>
-        <p>Đây là kỹ năng nâng cao để quản lý nhiều tác vụ chạy song song.</p>
+        <h3>17. Quản lý Tiến trình (Jobs Control)</h3>
         <div class="code-window">
-            <span class="kw">sleep</span> <span class="nm">100</span> <span class="op">&amp;</span> <span class="cm"># Chạy ngầm (Background)</span><br>
-            <span class="kw">jobs</span> <span class="cm"># Xem danh sách tiến trình</span><br>
-            <span class="kw">fg</span> %1 <span class="cm"># Đưa tiến trình 1 lên phía trước (Foreground)</span><br>
-            <span class="kw">stop</span> %1 <span class="cm"># Tạm dừng tiến trình</span>
+            <span class="kw">sleep</span> <span class="nm">100</span> <span class="op">&amp;</span>
         </div>
     </div>
 
     <div class="section-card">
-        <h3>Kết luận</h3>
-        <p>Bạn đã hoàn thành 15 mục cơ bản đến nâng cao của C Shell. Hãy thực hành viết các script tự động hóa nhỏ để ghi nhớ kiến thức tốt hơn.</p>
+        <h3>Lời khuyên thực hành</h3>
+        <p>Sử dụng <code>$status</code> để kiểm tra mã thoát của lệnh (0 là thành công).</p>
     </div>
 
 </main>
