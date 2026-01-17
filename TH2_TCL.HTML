@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài Liệu Tổng Hợp TCL Script</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; }
+        h1 { text-align: center; color: #d63384; text-transform: uppercase; margin-bottom: 30px; border-bottom: 3px solid #d63384; padding-bottom: 10px; }
+        .exercise-card { background: white; margin-bottom: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #eee; }
+        .ex-header { background: #d63384; color: white; padding: 12px 20px; font-size: 1.1rem; font-weight: bold; }
+        .ex-body { padding: 20px; }
+        .description { font-style: italic; color: #666; margin-bottom: 10px; display: block; }
+        pre[class*="language-"] { border-radius: 8px; margin: 0; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<h1>TH2: Bài tập TCL</h1>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 1: Tìm giá trị lớn nhất trong danh sách (max_of_list)</div>
+    <div class="ex-body">
+        <span class="description">Duyệt qua danh sách các số để tìm số lớn nhất.</span>
+        <pre class="language-tcl"><code>proc max_of_list {lst} { 
+    if {[llength $lst] == 0} {
+        return "Danh sach rong"
+    }
+    set max [lindex $lst 0]
+    foreach item $lst {
+        if {$item > $max} {
+            set max $item
+        }
+    }
+    return $max
+}
+set numbers {1 2 3 4 5 6 7 8 9}
+puts "Gia tri lon nhat la: [max_of_list $numbers]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 2: Đếm số phần tử trong danh sách (count_items)</div>
+    <div class="ex-body">
+        <span class="description">Sử dụng llength để xác định độ dài của các danh sách khác nhau.</span>
+        <pre class="language-tcl"><code>proc count_items {lst} {
+    return [llength $lst]
+}
+set list1 {1 2 3 4 5 6}
+set list2 {tao cam chuoi}
+set list3 {}
+puts "So phan tu list1: [count_items $list1]"
+puts "So phan tu list2: [count_items $list2]"
+puts "So phan tu list3: [count_items $list3]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 3: Kiểm tra số nguyên tố (is_prime)</div>
+    <div class="ex-body">
+        <span class="description">Sử dụng vòng lặp kiểm tra ước số từ 2 đến căn bậc hai của n.</span>
+        <pre class="language-tcl"><code>proc is_prime {n} {
+    if {$n < 2} { return 0 }
+    for {set i 2} {$i <= [expr sqrt($n)]} {incr i} {
+        if {[expr $n % $i] == 0} { return 0 }
+    }
+    return 1
+}
+set so 7
+if {[is_prime $so]} {
+    puts "$so la so nguyen to"
+} else {
+    puts "$so khong la so nguyen to"
+}</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 4: Sử dụng biến toàn cục (global)</div>
+    <div class="ex-body">
+        <span class="description">Minh họa cách thay đổi giá trị của một biến bên ngoài phạm vi thủ tục bằng lệnh global.</span>
+        <pre class="language-tcl"><code>set count 0
+proc increase_count {} {
+    global count
+    incr count
+    return $count
+}
+puts "Ban dau: $count"
+puts "Lan 1: [increase_count]"
+puts "Lan 2: [increase_count]"
+puts "Gia tri cuoi: $count"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 5: Đảo ngược danh sách (reverse_string)</div>
+    <div class="ex-body">
+        <span class="description">Sử dụng vòng lặp ngược và lệnh lappend để tạo danh sách mới đã đảo thứ tự.</span>
+        <pre class="language-tcl"><code>proc reverse_string {mylist length} {
+    set list2 {}
+    for {set i [expr $length - 1 ]} {$i >= 0} {incr i -1} {
+        set item [lindex $mylist $i]
+        lappend list2 $item
+    }
+    return $list2
+}
+puts "Nhap mang: "
+gets stdin list1
+set len [llength $list1]
+puts "Mang sau khi dao nguoc: [reverse_string $list1 $len]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 6: Tính giai thừa (factorial)</div>
+    <div class="ex-body">
+        <span class="description">Sử dụng vòng lặp for để tính tích lũy thừa của một số.</span>
+        <pre class="language-tcl"><code>proc factorial {n} {
+    set result 1
+    for {set i 1} {$i <= $n} {incr i} {
+        set result [expr $result * $i]
+    }
+    return $result
+}
+puts "Nhap so nguyen: "
+gets stdin n
+puts "$n! = [factorial $n]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 7: Dãy Fibonacci bằng đệ quy</div>
+    <div class="ex-body">
+        <span class="description">Tính giá trị thứ n trong dãy Fibonacci bằng phương pháp gọi lại hàm.</span>
+        <pre class="language-tcl"><code>proc fibo {num} {
+    if {$num == 1} { return 1 }
+    if {$num == 0} { return 0 }
+    return [expr {[fibo [expr {$num - 1}]] + [fibo [expr {$num - 2}]]}]
+}
+puts "Nhap n: "
+gets stdin n
+puts "So Fibonacci thu $n la: [fibo $n]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 8: Tìm ước chung lớn nhất (UCLN)</div>
+    <div class="ex-body">
+        <span class="description">Sử dụng thuật toán Euclid bằng đệ quy để tìm UCLN của hai số.</span>
+        <pre class="language-tcl"><code>proc UCLN {a b} {
+    if {$b == 0} {return $a}
+    return [UCLN $b [expr {$a % $b}]]
+}
+puts "Nhap a: "
+gets stdin a
+puts "Nhap b: "
+gets stdin b
+puts "UCLN cua $a va $b la: [UCLN $a $b]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 9: Sắp xếp danh sách (Bubble Sort)</div>
+    <div class="ex-body">
+        <span class="description">Sử dụng thuật toán sắp xếp nổi bọt để sắp xếp danh sách theo thứ tự tăng dần.</span>
+        <pre class="language-tcl"><code>proc sort_list {l len} {
+    for {set i 0} {$i < $len} {incr i } {
+        for {set j 0} {$j < [expr $len - $i - 1]} {incr j} {
+            set val1 [lindex $l $j]
+            set val2 [lindex $l [expr $j +1]]
+            if { $val1 > $val2} {
+                lset l $j $val2
+                lset l [expr $j + 1] $val1
+            }
+        }
+    }
+    return $l
+}
+puts "Nhap danh sach so: "
+gets stdin list1
+puts "Day sau khi sap xep: [sort_list $list1 [llength $list1]]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header">Bài 10: Loại bỏ các phần tử trùng lặp kế tiếp (unique_list)</div>
+    <div class="ex-body">
+        <span class="description">Duyệt danh sách và sử dụng lreplace để xóa các phần tử giống nhau nằm cạnh nhau.</span>
+        <pre class="language-tcl"><code>proc unique_list {l} {
+    set i 0
+    while { $i < [expr [llength $l] - 1]} {
+        if {[lindex $l $i] == [lindex $l [expr $i + 1]]} {
+            set l [lreplace $l [expr $i + 1] [expr $i + 1]]
+        } else {
+            incr i
+        }
+    }
+    return $l
+}
+puts "Nhap danh sach so: "
+gets stdin list1
+puts "Ket qua: [unique_list $list1]"</code></pre>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tcl.min.js"></script>
+
+</body>
+</html>
