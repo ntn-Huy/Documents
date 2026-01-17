@@ -184,19 +184,24 @@ puts "Day sau khi sap xep: [sort_list $list1 [llength $list1]]"</code></pre>
 </div>
 
 <div class="exercise-card">
-    <div class="ex-header">Bài 10: Loại bỏ các phần tử trùng lặp kế tiếp (unique_list)</div>
+    <div class="ex-header">Bài 10: Loại bỏ các phần tử trùng lặp (unique_list)</div>
     <div class="ex-body">
-        <span class="description">Duyệt danh sách và sử dụng lreplace để xóa các phần tử giống nhau nằm cạnh nhau.</span>
+        <span class="description">Duyệt danh sách tìm kiếm phần tử lặp lại thì không thêm vào danh sách mới</span>
         <pre class="language-tcl"><code>proc unique_list {l} {
-    set i 0
-    while { $i < [expr [llength $l] - 1]} {
-        if {[lindex $l $i] == [lindex $l [expr $i + 1]]} {
-            set l [lreplace $l [expr $i + 1] [expr $i + 1]]
-        } else {
-            incr i
+set result {}
+        foreach item $l {
+                set check 0
+                foreach seen $result {
+                        if { $seen == $item} {
+                                set check 1
+                                break
+                        }
+                }
+                if {$check == 0} {
+                        lappend result $item
+                }
         }
-    }
-    return $l
+return $result
 }
 puts "Nhap danh sach so: "
 gets stdin list1
@@ -210,3 +215,4 @@ puts "Ket qua: [unique_list $list1]"</code></pre>
 </body>
 
 </html>
+
