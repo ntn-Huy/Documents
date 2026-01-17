@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài Liệu Tổng Hợp TCL Script (Full 11 Bài)</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 1100px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        h1 { text-align: center; color: #00796b; text-transform: uppercase; margin-bottom: 30px; border-bottom: 4px solid #00796b; padding-bottom: 10px; }
+        .exercise-card { background: white; margin-bottom: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e0e0e0; }
+        .ex-header { background: #00796b; color: white; padding: 15px 20px; font-size: 1.2rem; font-weight: bold; display: flex; justify-content: space-between; }
+        .ex-body { padding: 25px; }
+        .description { font-style: italic; color: #546e7a; margin-bottom: 15px; display: block; background: #e0f2f1; padding: 10px; border-left: 5px solid #009688; border-radius: 4px; }
+        pre[class*="language-"] { border-radius: 8px; margin: 0; font-size: 14px; background: #1e1e1e !important; }
+        .badge { background: #ffa000; color: #fff; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<h1>TH3: Bài tập TCL (tt)</h1>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 1: Đếm số ký tự</span><span class="badge">String</span></div>
+    <div class="ex-body">
+        <span class="description">Yêu cầu người dùng nhập một chuỗi và sử dụng hàm [string length] để trả về độ dài.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+puts "Dem so ky tu"
+puts "Nhap chuoi: "
+gets stdin str
+proc count_char {s} {
+    puts "chuoi co [string length "$s"] ky tu"
+}
+count_char $str</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 2: Đếm số dòng trong file</span><span class="badge">File I/O</span></div>
+    <div class="ex-body">
+        <span class="description">Mở một tệp tin ở chế độ đọc và dùng vòng lặp để đếm tổng số dòng văn bản.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+puts "Doc file"
+puts "Nhap ten file"
+gets stdin file
+proc read_file {f} {
+    set count 0
+    set fd [ open $f r]
+    while {[gets $fd line] >= 0} {
+        set count [expr $count + 1]
+    }
+    close $fd
+    return $count
+}
+set sodong [read_file $file]
+puts "File $file co $sodong dong"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 3: Ghi Log hệ thống</span><span class="badge">System</span></div>
+    <div class="ex-body">
+        <span class="description">Lấy thời gian hiện tại từ hệ thống và ghi tin nhắn kèm mốc thời gian vào file log.txt.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+puts "Write log"
+puts "Nhap tin nhan: "
+gets stdin mes
+proc write_log {m} {
+    set timestamp [clock format [clock seconds] -format "%d/%m/%Y %H:%M"]
+    set fd [open "log.txt" w]
+    puts $fd "$m - $timestamp"
+    close $fd
+    puts "Da ghi log luc: $timestamp"
+}
+write_log $mes</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 4: Chuẩn hóa dữ liệu chuỗi</span><span class="badge">Regex</span></div>
+    <div class="ex-body">
+        <span class="description">Sử dụng regsub để loại bỏ các khoảng trắng thừa và đưa toàn bộ chuỗi về chữ thường.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+puts "Nhap chuoi: "
+gets stdin str
+proc normalize_string {s} {
+    set str [string trim "$s"]
+    set str [string tolower "$str"]
+    regsub -all {\s+} $str " " str
+    return $str
+}
+puts "Ket qua: [normalize_string $str]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 5: Thống kê số lượng từ</span><span class="badge">File I/O</span></div>
+    <div class="ex-body">
+        <span class="description">Đọc nội dung file, tách các từ bằng khoảng trắng và đếm tổng số từ hiện có.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc count_words_in_file {f} {
+    set fd [open $f r]
+    set sum 0
+    while {[gets $fd line] >= 0} {
+        set danhsach [split $line " "]
+        set sum [expr $sum + [llength $danhsach]]
+    }
+    close $fd
+    return $sum
+}
+puts "Nhap ten file: "
+gets stdin file
+puts "Tong so tu: [count_words_in_file $file]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 6: Thay thế nội dung hàng loạt</span><span class="badge">String Map</span></div>
+    <div class="ex-body">
+        <span class="description">Thay đổi toàn bộ nội dung của một file thành chuỗi "hello" và lưu vào file kết quả mới.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc replace_in_file {f} {
+    set fi [open $f r]; set noidung [read $fi]; close $fi
+    set new [string map [list $noidung "hello"] $noidung]
+    set fo [open "result_$f" w]; puts $fo $new; close $fo
+    puts "Da tao file result_$f"
+}
+puts "Nhap file: "
+gets stdin file_in
+replace_in_file $file_in</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 7: Gộp nhiều file văn bản</span><span class="badge">Management</span></div>
+    <div class="ex-body">
+        <span class="description">Đọc một danh sách các file và nối tất cả nội dung vào một file duy nhất mang tên merged.txt.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc merge_files {list_file} {
+    set out [open "merged.txt" w]
+    foreach f $list_file {
+        if {[file exists $f]} {
+            set in [open $f r]; puts $out [read $in]; close $in
+        }
+    }
+    close $out
+    puts "Gop file hoan tat!"
+}
+puts "Nhap danh sach file: "
+gets stdin listfile
+merge_files $listfile</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 8: Xử lý định dạng CSV</span><span class="badge">Parsing</span></div>
+    <div class="ex-body">
+        <span class="description">Tách chuỗi ngăn cách bởi dấu phẩy thành các phần tử danh sách sạch (đã xóa khoảng trắng).</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc parse_csv_line {csv} {
+    set clean_list {}
+    foreach item [split $csv ","] {
+        lappend clean_list [string trim $item]
+    }
+    return $clean_list
+}
+puts "Nhap chuoi CSV: "
+gets stdin c
+puts "Danh sach sau khi parse: [parse_csv_line $c]"</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 9: Tìm dòng dài nhất</span><span class="badge">Analysis</span></div>
+    <div class="ex-body">
+        <span class="description">Quét toàn bộ file để xác định và in ra dòng văn bản có độ dài lớn nhất.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc longest_line {f} {
+    set fd [open $f r]; set max 0; set res ""
+    while {[gets $fd line] >= 0} {
+        if {[string length $line] > $max} {
+            set max [string length $line]; set res $line
+        }
+    }
+    puts "Dòng dài nhất ($max ky tu): $res"
+}
+puts "Nhap file: "; gets stdin fil; longest_line $fil</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 10: Lọc dữ liệu bằng Regex</span><span class="badge">Filter</span></div>
+    <div class="ex-body">
+        <span class="description">Chỉ trích xuất và hiển thị những dòng có chứa ít nhất một chữ số từ 0-9.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc filter_lines {f} {
+    set fd [open $f r]; set c 0
+    while {[gets $fd line] >= 0} {
+        if {[regexp {[0-9]+} $line]} {
+            puts "Match: $line"; incr c
+        }
+    }
+    puts "Tim thay $c dong."
+}
+puts "Nhap file: "; gets stdin fi; filter_lines $fi</code></pre>
+    </div>
+</div>
+
+<div class="exercise-card">
+    <div class="ex-header"><span>Bài 11: Đổi tên file hàng loạt</span><span class="badge">Utilities</span></div>
+    <div class="ex-body">
+        <span class="description">Đổi phần mở rộng (extension) của nhiều file cùng lúc một cách an toàn.</span>
+        <pre class="language-tcl"><code>#!/usr/bin/tclsh
+proc rename_files {list_files old_ext new_ext} {
+    foreach f $list_files {
+        if {[file exists $f] && [file extension $f] == $old_ext} {
+            set new "[file rootname $f]$new_ext"
+            file rename -force $f $new
+            puts "Renamed: $f -> $new"
+        }
+    }
+}
+puts "Nhap list file, duoi cu, duoi moi: "
+gets stdin files; gets stdin o; gets stdin n
+rename_files $files $o $n</code></pre>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tcl.min.js"></script>
+
+</body>
+</html>
